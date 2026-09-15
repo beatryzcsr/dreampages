@@ -7,7 +7,7 @@ const campos = [
 	{ name: 'nome', label: 'Nome do livro', placeholder: 'Ex: Sherlock Holmes' },
 	{ name: 'autor', label: 'Autor', placeholder: 'Ex: Arthur Conan Doyle' },
 	{ name: 'livraria', label: 'Livraria', placeholder: 'Ex: Leitura' },
-	{ name: 'classificacao', label: 'Classificação', placeholder: 'Ex: 10 anos' },
+	{ name: 'classificacao', label: 'Classificação', placeholder: 'Ex: 10 anos'},
 	{ name: 'quantidade', label: 'Quantidade', placeholder: '1', type: 'number', min: '1' },
 	{ name: 'preco', label: 'Preço', placeholder: 'Ex: 70,00', type: 'number', min: '0', step: '0.01' },
 	{ name: 'genero', label: 'Gênero', placeholder: 'Ex: Suspense Policial' },
