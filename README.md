@@ -52,6 +52,7 @@ Como rodar o Front-End
 - caso ainda não tenha as dependencias, dê "npm install"-> FrontEnd
 - npm i jsonwebtoken -> BackEnd
 - arquivo .env na raíz
+
 =========
 
  
