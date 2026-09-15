@@ -1,7 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Island+Moments&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Slabo+13px&display=swap');
 @import 'tailwindcss';
 
 @theme {
 	--font-island: 'Island Moments', cursive;
+	--font-slabo: 'Slabo 13px', serif;
   
 }
