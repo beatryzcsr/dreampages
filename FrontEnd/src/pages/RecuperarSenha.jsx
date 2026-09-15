@@ -1,13 +1,21 @@
 import logo from '../assets/dreamPages.png'
 import belaFera from '../assets/belaEFera.png'
 
-function RecuperarSenha({ senha, setSenha, onNavigate, onSubmit }) {
+function RecuperarSenha({ senha, setSenha, onNavigate, onSubmit }) 
+//props
+//essa peça é a tela de recuperação de senha.
+// setSenha -> É a função que altera a senha.
+
+{
   return (
+    // div principal
     <div className="flex min-h-dvh text-white lg:h-dvh lg:min-h-0 lg:overflow-hidden" style={{ backgroundColor: '#6F020D' }}>
+    {/* imagem*/}
       <div className="relative hidden overflow-hidden bg-stone-900 lg:block lg:h-full lg:w-1/2">
         <img src={belaFera} alt="Beauty and the Beast" className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-stone-950/60 via-transparent to-transparent" />
-      </div>
+      </div> 
+{/* logo, título, texto, campo da senha, botão, link para cadastro  */}
 
       <div className="flex min-h-dvh w-full items-center justify-center overflow-y-auto px-5 py-8 sm:px-10 sm:py-10 lg:h-full lg:min-h-0 lg:w-1/2 lg:px-16 lg:py-6">
         <div className="w-full max-w-md">
