@@ -1,7 +1,9 @@
 import logo from '../assets/dreamPages.png'
 import belaFera from '../assets/belaEFera.png'
 
-function Cadastro({ email, setEmail, senha, setSenha, onNavigate, onSubmit }) {
+function Cadastro({ email, setEmail, senha, setSenha, onNavigate, onSubmit }) 
+// Recebe os mesmos tipos de informação do Login.
+{
   return (
     <div className="flex min-h-dvh text-white lg:h-dvh lg:min-h-0 lg:overflow-hidden" style={{ backgroundColor: '#6F020D' }}>
       <div className="relative hidden overflow-hidden bg-stone-900 lg:block lg:h-full lg:w-1/2">
@@ -24,6 +26,7 @@ function Cadastro({ email, setEmail, senha, setSenha, onNavigate, onSubmit }) {
               onChange={(event) => setEmail(event.target.value)}
               placeholder="Digite seu e-mail"
             />
+{/* O usuário digita o email e o valor é guardado no estado.             */}
             </label>
 
             <label className="block">
@@ -35,11 +38,13 @@ function Cadastro({ email, setEmail, senha, setSenha, onNavigate, onSubmit }) {
               onChange={(event) => setSenha(event.target.value)}
               placeholder="Crie uma senha"
             />
+{/* O usuário digita uma senha. */}
             </label>
 
             <button type="submit" className="w-full rounded-lg px-4 py-3 font-island text-4xl text-[#051A50]  transition hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"style={{ backgroundColor: '#E7E2C2' }}>
               Criar
             </button>
+            {/* Envia o formulário. O onSubmit é quem realmente executa a função responsável pelo cadastro. */}
           </form>
 
           <p className="mt-6 text-center text-sm text-white/90">
@@ -47,6 +52,7 @@ function Cadastro({ email, setEmail, senha, setSenha, onNavigate, onSubmit }) {
             <button type="button" className="font-semibold text-rose-600 transition hover:text-rose-700" onClick={() => onNavigate('login')}>
               Entre
             </button>
+            {/* Ao clicar em Entre, volta para a tela de login. */}
           </p>
         </div>
       </div>

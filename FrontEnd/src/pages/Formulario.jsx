@@ -55,15 +55,21 @@ function Formulario({ onNavigate, onSelectBook }) {
         //impede o comportamento padrão do formulário de atualizar sozinho
 
 		if (!livro.nome.trim() || !livro.autor.trim()) return
+        //verifica se o usuário colocou nome do livro, autor. Trim remove espaços desnecessários. Se algum dos campos não estiver concluído, a consição n é feita.
 
 		setLivros((livrosAtuais) => [...livrosAtuais, { ...livro }])
+        //...livrosAtuais mantém livros antigos
+        //...livro adiciona novo
+        //adciona novo livro na lista
 
 		setLivro({ ...estadoInicial })
+        //limpa o formulário e volta para os valores iniciais.
 	}
 
 	const handleEdit = (index) => {
+        //recebe a posição do livro na lista
 		onSelectBook?.(livros[index])
-	}
+	}//Pega o livro escolhido e só executa se onSelectBook existir.
 
 	const handleDelete = (index) => {
 		const livroParaExcluir = livros[index]
@@ -73,14 +79,19 @@ function Formulario({ onNavigate, onSelectBook }) {
 
 		setLivros((livrosAtuais) => livrosAtuais.filter((_, livroIndex) => livroIndex !== index))
 
-	}
+	}//Função responsável por excluir livros. Depois cria uma nova lista sem o livro escolhido.
 
 	const tituloLivro = livro.nome.trim() || 'Seu livro aparecerá aqui'
+    //se o usuário digitou um nome, mostrará onde está escrito "Seu livro aparecerá aqui", se não a frase permanecerá.
 	const autorLivro = livro.autor.trim() || 'Preencha o autor'
+    //mesma lógica
 	const quantidade = Number(livro.quantidade) || 0
+    //mesma lógica
 	const preco = Number(livro.preco) || 0
+    //mesma lógica
 	const total = preco * quantidade
-	const formatarMoeda = (valor) => valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+    //mesma lógica
+	const formatarMoeda = (valor) => valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })//mesma lógica
 
 	return (
 		<main
@@ -125,6 +136,15 @@ function Formulario({ onNavigate, onSelectBook }) {
 
 					</div>
 					</form>
+
+{/* Ela mostra:
+
+livro;
+autor;
+quantidade;
+preço;
+frete;
+total. */}
 
 					<aside className="relative min-h-[24rem] overflow-hidden border border-[#C9A04A]/80 bg-[#F4E8CC] p-6 text-[#17213D] shadow-xl sm:min-h-[26rem] sm:p-7">
 						<img src={borda} alt="" aria-hidden="true" className="pointer-events-none absolute left-2 top-2 z-0 h-14 w-14 object-contain" />
@@ -182,6 +202,7 @@ function Formulario({ onNavigate, onSelectBook }) {
 										>
 											Editar
 										</button>
+                                        {/* chama handleEdit() passando a posição daquele livro. */}
 										<button
 											type="button"
 											onClick={() => handleDelete(index)}
@@ -189,6 +210,7 @@ function Formulario({ onNavigate, onSelectBook }) {
 										>
 											Excluir
 										</button>
+                                        {/* chama handleDelete() com a posição do livro. */}
 									</div>
 								</article>
 							))}
