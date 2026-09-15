@@ -46,7 +46,7 @@ function Dashboard() {
 
     return (
         <main className="min-h-dvh bg-cover bg-center bg-fixed px-3 py-12 text-[#AA723B] sm:px-6 sm:py-16 lg:px-10" style={{ backgroundImage: `url(${fundo})` }}>
-            <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-8">
+            <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-8 ">
                 {informacoes.map((item) => (
                     <div key={item.titulo} className="w-52 rounded-4xl bg-[#051A50]/95 p-6 text-center shadow-2xl">
                         <h2 className="font-serif text-2xl">{item.titulo}</h2>
