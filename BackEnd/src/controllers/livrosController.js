@@ -1,10 +1,43 @@
 // Importa a conexão com o banco 
 import pool from '../database/connection.js';
 
+// Converte o ID ou o texto da classificação no ID exigido pela tabela livros.
+const resolverIdClassificacao = async (valor) => {
+  if (valor === undefined || valor === null) {
+    throw Object.assign(new Error('Classificação inválida'), { statusCode: 400 });
+  }
+
+  const texto = String(valor).trim();
+
+  if (texto === '') {
+    throw Object.assign(new Error('Classificação inválida'), { statusCode: 400 });
+  }
+
+  const numero = Number(texto);
+  const { rows } = await pool.query(
+    `
+      SELECT idclassificacao
+      FROM classificacao
+      WHERE LOWER(classificacao) = LOWER($1)
+         OR idclassificacao = $2
+      LIMIT 1;
+    `,
+    [texto, Number.isInteger(numero) ? numero : null]
+  );
+
+  if (rows.length === 0) {
+    const erro = new Error(`Classificação não encontrada: ${valor}`);
+    erro.statusCode = 400;
+    throw erro;
+  }
+
+  return rows[0].idclassificacao;
+};
+
 // GET /livros - Lista todos os livros cadastrados
 export const listarLivros = async (req, res) => {
   try {
-    const query = 'SELECT * FROM dreampages ORDER BY idLivro;';
+    const query = 'SELECT * FROM livros ORDER BY idLivro;';
     const { rows } = await pool.query(query);
 
     // Retorna a lista em JSON pro frontend consumir
@@ -20,7 +53,7 @@ export const buscarLivroPorId = async (req, res) => {
   try {
     // Pega o parâmetro da URL /livros/:id
     const { id } = req.params;
-    const query = 'SELECT * FROM dreampages WHERE idLivro = $1;';
+    const query = 'SELECT * FROM livros WHERE idLivro = $1;';
     const { rows } = await pool.query(query, [id]);
 
     // Se não existir, responde 404
@@ -42,6 +75,9 @@ export const criarLivro = async (req, res) => {
     // Extrai os dados 
     const { titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor } = req.body;
 
+    // Apenas classificacao possui relacionamento; os demais campos são textos.
+    const classificacaoId = await resolverIdClassificacao(classificacao);
+
     //  inserção
     const query = `
       INSERT INTO livros (titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor)
@@ -49,7 +85,7 @@ export const criarLivro = async (req, res) => {
       RETURNING *;
     `;
 
-    const values = [titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor];
+    const values = [titulo, sinopse, quantidade, preco, imagem, genero, classificacaoId, livraria, autor];
 
     // o retorno do insert precisa ser capturado em rows
     const { rows } = await pool.query(query, values);
@@ -57,7 +93,7 @@ export const criarLivro = async (req, res) => {
     return res.status(201).json(rows[0]);
   } catch (error) {
     console.error('Erro ao criar livro:', error);
-    return res.status(500).json({ mensagem: 'Erro interno do servidor' });
+    return res.status(error.statusCode || 500).json({ mensagem: error.statusCode ? error.message : 'Erro interno do servidor' });
   }
 };
 
@@ -67,6 +103,7 @@ export const atualizarLivro = async (req, res) => {
     // Pega o ID da URL e os dados do corpo
     const { id } = req.params;
     const { titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor } = req.body;
+    const classificacaoId = await resolverIdClassificacao(classificacao);
 
     // atualizar os campos do livro
     const query = `
@@ -75,7 +112,7 @@ export const atualizarLivro = async (req, res) => {
       WHERE idLivro = $10
       RETURNING *;
     `;
-    const values = [titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor, id];
+    const values = [titulo, sinopse, quantidade, preco, imagem, genero, classificacaoId, livraria, autor, id];
 
     const { rows } = await pool.query(query, values);
 
