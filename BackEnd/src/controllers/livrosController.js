@@ -4,8 +4,7 @@ import pool from '../database/connection.js';
 // GET /livros - Lista todos os livros cadastrados
 export const listarLivros = async (req, res) => {
   try {
-    // Query SQL para buscar todos os registros da tabela livros
-    const query = 'SELECT * FROM livros ORDER BY idLivro;';
+    const query = 'SELECT * FROM dreampages ORDER BY idLivro;';
     const { rows } = await pool.query(query);
 
     // Retorna a lista em JSON pro frontend consumir
@@ -21,7 +20,7 @@ export const buscarLivroPorId = async (req, res) => {
   try {
     // Pega o parâmetro da URL /livros/:id
     const { id } = req.params;
-    const query = 'SELECT * FROM livros WHERE idLivro = $1;';
+    const query = 'SELECT * FROM dreampages WHERE idLivro = $1;';
     const { rows } = await pool.query(query, [id]);
 
     // Se não existir, responde 404
