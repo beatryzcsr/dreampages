@@ -3,6 +3,8 @@ import borda from '../assets/borda.png'
 import logo from '../assets/dreamPages.png'
 import fundo from '../assets/fundo.png'
 
+//Guarda as informações necessárias para criar os campos do formulário. name -> nome interno do campo; label -> texto que aparece pro ususário; placeholder -> exemplo que aparece dentro caixa de texto. 
+
 const campos = [
 	{ name: 'nome', label: 'Nome do livro', placeholder: 'Ex: Sherlock Holmes' },
 	{ name: 'autor', label: 'Autor', placeholder: 'Ex: Arthur Conan Doyle' },
@@ -14,6 +16,7 @@ const campos = [
     { name: 'editora', label: 'Editora', placeholder: 'Ex: Sextante' },
 ]
 
+//como cada elemento aparecerá antes do usuário digitar algo. "" significa que está vazio, 1 signfica que começa a partir do 1
 const estadoInicial = {
 	nome: '',
 	autor: '',
@@ -25,17 +28,31 @@ const estadoInicial = {
     editora: '',
 }
 
+//cria um componente Formulário cm props dentro dos {}, as props são informaões que outro componente manda para esse componente.
+
+//onNavigate -> mudar de página
+//onSelectBook ->quando o livro é selecionado para edição
+
 function Formulario({ onNavigate, onSelectBook }) {
+    //guarda dados que estão sendo armazenados no formulário 
 	const [livro, setLivro] = useState(estadoInicial)
 	const [livros, setLivros] = useState([])
+    //livro-> informação atual
+    //setLivro -> modifica os dados atuais
+    //[] lista vazia
 
 	const handleChange = (event) => {
 		const { name, value } = event.target
 		setLivro((livroAtual) => ({ ...livroAtual, [name]: value }))
+        //...livroAtual mantém as informações q já estavam preenchidas
+        //[name]: value atualiza somente o que acabou de ser alterado
 	}
+    //handleChange = (event) => {} essa função é executada quando o usuário digita algo
 
+    //ao clicar cadastrar livro
 	const handleSubmit = (event) => {
 		event.preventDefault()
+        //impede o comportamento padrão do formulário de atualizar sozinho
 
 		if (!livro.nome.trim() || !livro.autor.trim()) return
 
