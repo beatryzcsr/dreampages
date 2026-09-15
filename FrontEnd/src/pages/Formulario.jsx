@@ -9,7 +9,7 @@ const campos = [
 	{ name: 'nome', label: 'Nome do livro', placeholder: 'Ex: Sherlock Holmes' },
 	{ name: 'autor', label: 'Autor', placeholder: 'Ex: Arthur Conan Doyle' },
 	{ name: 'livraria', label: 'Livraria', placeholder: 'Ex: Leitura' },
-	{ name: 'classificacao', label: 'Classificação', placeholder: 'Ex: 10 anos'},
+	{ name: 'classificacao', label: 'Classificação', type: 'select', options: ['Livre', '10', '12', '14', '16', '18'] },
 	{ name: 'quantidade', label: 'Quantidade', placeholder: '1', type: 'number', min: '1' },
 	{ name: 'preco', label: 'Preço', placeholder: 'Ex: 70,00', type: 'number', min: '0', step: '0.01' },
 	{ name: 'genero', label: 'Gênero', placeholder: 'Ex: Suspense Policial' },
@@ -117,16 +117,33 @@ function Formulario({ onNavigate, onSelectBook }) {
 									<span className="mb-2 block text-xs uppercase tracking-[0.14em] text-[#E7E2C2]/85">
 										{campo.label}
 									</span>
-									<input
-										className="w-full border-b border-[#C9A04A] bg-[#071331]/80 px-3 py-2 text-sm text-[#E7E2C2] outline-none transition placeholder:text-[#E7E2C2]/45 focus:border-[#F4D36D] focus:bg-[#0a1d49] focus:ring-1 focus:ring-[#F4D36D]"
-										type={campo.type || 'text'}
-										min={campo.min}
-										name={campo.name}
-										value={livro[campo.name]}
-										onChange={handleChange}
-										placeholder={campo.placeholder}
-										required={['nome', 'autor', 'preco'].includes(campo.name)}
-									/>
+									{campo.type === 'select' ? (
+										<select
+											className="w-full border-b border-[#C9A04A] bg-[#071331]/80 px-3 py-2 text-sm text-[#E7E2C2] outline-none transition focus:border-[#F4D36D] focus:bg-[#0a1d49] focus:ring-1 focus:ring-[#F4D36D]"
+											name={campo.name}
+											value={livro[campo.name]}
+											onChange={handleChange}
+										>
+											<option value="" className="bg-[#071331]">Selecione</option>
+											{campo.options.map((option) => (
+												<option key={option} value={option} className="bg-[#071331]">
+													{option === 'Livre' ? option : `${option} anos`}
+												</option>
+											))}
+										</select>
+									) : (
+										<input
+											className="w-full border-b border-[#C9A04A] bg-[#071331]/80 px-3 py-2 text-sm text-[#E7E2C2] outline-none transition placeholder:text-[#E7E2C2]/45 focus:border-[#F4D36D] focus:bg-[#0a1d49] focus:ring-1 focus:ring-[#F4D36D]"
+											type={campo.type || 'text'}
+											min={campo.min}
+											step={campo.step}
+											name={campo.name}
+											value={livro[campo.name]}
+											onChange={handleChange}
+											placeholder={campo.placeholder}
+											required={['nome', 'autor', 'preco'].includes(campo.name)}
+										/>
+									)}
 								</label>
 							))}
 						</div>
