@@ -14,20 +14,20 @@ async function buscarLivroPorId(id) {
 }
 
 // Cria um novo livro no banco
-async function criarLivro({ titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor }) {
+async function criarLivro({ titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor, editora }) {
   const result = await pool.query(
-    "INSERT INTO livros (titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
-    [titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor]
+    "INSERT INTO livros (titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor, editora) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
+    [titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor, editora]
   );
 
   return result.rows[0];
 }
 
 // Atualiza um livro existente pelo ID
-async function atualizarLivro(id, { titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor }) {
+async function atualizarLivro(id, { titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor, editora }) {
   const result = await pool.query(
-    "UPDATE livros SET titulo = $1, sinopse = $2, quantidade = $3, preco = $4, imagem = $5, genero = $6, classificacao = $7, livraria = $8, autor = $9 WHERE idLivro = $10 RETURNING *",
-    [titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor, id]
+    "UPDATE livros SET titulo = $1, sinopse = $2, quantidade = $3, preco = $4, imagem = $5, genero = $6, classificacao = $7, livraria = $8, autor = $9, editora = $10 WHERE idLivro = $11 RETURNING *",
+    [titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor, editora, id]
   );
 
   return result.rows[0];

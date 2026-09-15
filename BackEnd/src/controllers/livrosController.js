@@ -73,19 +73,19 @@ export const buscarLivroPorId = async (req, res) => {
 export const criarLivro = async (req, res) => {
   try {
     // Extrai os dados 
-    const { titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor } = req.body;
+    const { titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor, editora} = req.body;
 
     // Apenas classificacao possui relacionamento; os demais campos são textos.
     const classificacaoId = await resolverIdClassificacao(classificacao);
 
     //  inserção
     const query = `
-      INSERT INTO livros (titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      INSERT INTO livros (titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor, editora)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
       RETURNING *;
     `;
 
-    const values = [titulo, sinopse, quantidade, preco, imagem, genero, classificacaoId, livraria, autor];
+    const values = [titulo, sinopse, quantidade, preco, imagem, genero, classificacaoId, livraria, autor, editora];
 
     // o retorno do insert precisa ser capturado em rows
     const { rows } = await pool.query(query, values);
@@ -102,17 +102,17 @@ export const atualizarLivro = async (req, res) => {
   try {
     // Pega o ID da URL e os dados do corpo
     const { id } = req.params;
-    const { titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor } = req.body;
+    const { titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor, editora } = req.body;
     const classificacaoId = await resolverIdClassificacao(classificacao);
 
     // atualizar os campos do livro
     const query = `
       UPDATE livros
-      SET titulo = $1, sinopse = $2, quantidade = $3, preco = $4, imagem = $5, genero = $6, classificacao = $7, livraria = $8, autor = $9
-      WHERE idLivro = $10
+      SET titulo = $1, sinopse = $2, quantidade = $3, preco = $4, imagem = $5, genero = $6, classificacao = $7, livraria = $8, autor = $9, editora = $10
+      WHERE idLivro = $11
       RETURNING *;
     `;
-    const values = [titulo, sinopse, quantidade, preco, imagem, genero, classificacaoId, livraria, autor, id];
+    const values = [titulo, sinopse, quantidade, preco, imagem, genero, classificacaoId, livraria, autor, editora, id];
 
     const { rows } = await pool.query(query, values);
 
