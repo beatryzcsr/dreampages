@@ -8,6 +8,7 @@ import Listagem from './pages/Listagem.jsx'
 import Detalhes from './pages/Detalhes.jsx'
 import Formulario from './pages/Formulario.jsx'
 import Header from './components/Header.jsx'
+import Footer from './components/Footer.jsx'
 
 function App() {
   const [pagina, setPagina] = useState('login')
@@ -63,6 +64,7 @@ function App() {
       <>
         <Header onNavigate={setPagina} />
         {conteudo}
+        <Footer />
       </>
     )
   }

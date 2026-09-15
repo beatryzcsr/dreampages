@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import Footer from '../components/Footer.jsx'
 import borda from '../assets/borda.png'
 import logo from '../assets/dreamPages.png'
 import fundo from '../assets/fundo.png'
@@ -211,7 +210,6 @@ function Formulario({ onNavigate }) {
 					</section>
 				)}
 			</section>
-			<Footer />
 		</main>
 	)
 }
