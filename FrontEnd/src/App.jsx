@@ -4,6 +4,7 @@ import Login from './pages/Login.jsx'
 import RecuperarSenha from './pages/RecuperarSenha.jsx'
 import Edição from './pages/Edição.jsx'
 import Home from './pages/Home.jsx'
+import Dashboard from './pages/Dashboard.jsx'
 import Listagem from './pages/Listagem.jsx'
 import Detalhes from './pages/Detalhes.jsx'
 import Formulario from './pages/Formulario.jsx'
@@ -45,10 +46,11 @@ function App() {
     )
   }
 
-  if (pagina === 'home' || pagina === 'listagem' || pagina === 'detalhes' || pagina === 'edicao' || pagina === 'formulario') {
+  if (pagina === 'home' || pagina === 'dashboard' || pagina === 'listagem' || pagina === 'detalhes' || pagina === 'edicao' || pagina === 'formulario') {
     let conteudo
 
     if (pagina === 'home') conteudo = <Home onNavigate={setPagina} />
+    if (pagina === 'dashboard') conteudo = <Dashboard onNavigate={setPagina} />
     if (pagina === 'listagem') {
       conteudo = <Listagem onNavigate={setPagina} onSelectBook={setLivroSelecionado} />
     }
