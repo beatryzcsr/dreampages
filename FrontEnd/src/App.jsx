@@ -2,14 +2,21 @@ import { useState } from 'react'
 import Cadastro from './pages/Cadastro.jsx'
 import Login from './pages/Login.jsx'
 import RecuperarSenha from './pages/RecuperarSenha.jsx'
+import Edição from './pages/Edição.jsx'
+import Home from './pages/Home.jsx'
+import Listagem from './pages/Listagem.jsx'
+import Detalhes from './pages/Detalhes.jsx'
+import Header from './components/Header.jsx'
 
 function App() {
   const [pagina, setPagina] = useState('login')
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
+  const [livroSelecionado, setLivroSelecionado] = useState(null)
 
   const handleSubmit = (event) => {
     event.preventDefault()
+    setPagina('home')
   }
 
   if (pagina === 'cadastro') {
@@ -33,6 +40,28 @@ function App() {
         onNavigate={setPagina}
         onSubmit={handleSubmit}
       />
+    )
+  }
+
+  if (pagina === 'home' || pagina === 'listagem' || pagina === 'detalhes' || pagina === 'edicao') {
+    let conteudo
+
+    if (pagina === 'home') conteudo = <Home onNavigate={setPagina} />
+    if (pagina === 'listagem') {
+      conteudo = <Listagem onNavigate={setPagina} onSelectBook={setLivroSelecionado} />
+    }
+    if (pagina === 'detalhes') {
+      conteudo = <Detalhes livro={livroSelecionado} onNavigate={setPagina} />
+    }
+    if (pagina === 'edicao') {
+      conteudo = <Edição livro={livroSelecionado} onNavigate={setPagina} />
+    }
+
+    return (
+      <>
+        <Header onNavigate={setPagina} />
+        {conteudo}
+      </>
     )
   }
 
