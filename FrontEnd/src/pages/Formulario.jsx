@@ -4,13 +4,14 @@ import logo from '../assets/dreamPages.png'
 import fundo from '../assets/fundo.png'
 
 const campos = [
-	{ name: 'nome', label: 'Nome do livro', placeholder: 'Ex.: O Pequeno Príncipe' },
-	{ name: 'autor', label: 'Autor', placeholder: 'Ex.: Antoine de Saint-Exupéry' },
-	{ name: 'livraria', label: 'Livraria', placeholder: 'Ex.: Estante dos sonhos' },
-	{ name: 'classificacao', label: 'Classificação', placeholder: 'Ex.: Fantasia' },
+	{ name: 'nome', label: 'Nome do livro', placeholder: 'Ex: Sherlock Holmes' },
+	{ name: 'autor', label: 'Autor', placeholder: 'Ex: Arthur Conan Doyle' },
+	{ name: 'livraria', label: 'Livraria', placeholder: 'Ex: Leitura' },
+	{ name: 'classificacao', label: 'Classificação', placeholder: 'Ex: 10 anos' },
 	{ name: 'quantidade', label: 'Quantidade', placeholder: '1', type: 'number', min: '1' },
-	{ name: 'preco', label: 'Preço', placeholder: 'Ex.: 70,00', type: 'number', min: '0', step: '0.01' },
-	{ name: 'categoria', label: 'Categoria', placeholder: 'Ex.: Romance' },
+	{ name: 'preco', label: 'Preço', placeholder: 'Ex: 70,00', type: 'number', min: '0', step: '0.01' },
+	{ name: 'genero', label: 'Gênero', placeholder: 'Ex: Suspense Policial' },
+    { name: 'editora', label: 'Editora', placeholder: 'Ex: Sextante' },
 ]
 
 const estadoInicial = {
@@ -20,13 +21,13 @@ const estadoInicial = {
 	classificacao: '',
 	quantidade: '1',
 	preco: '',
-	categoria: '',
+	genero: '',
+    editora: '',
 }
 
-function Formulario({ onNavigate }) {
+function Formulario({ onNavigate, onSelectBook }) {
 	const [livro, setLivro] = useState(estadoInicial)
 	const [livros, setLivros] = useState([])
-	const [indiceEmEdicao, setIndiceEmEdicao] = useState(null)
 
 	const handleChange = (event) => {
 		const { name, value } = event.target
@@ -38,22 +39,13 @@ function Formulario({ onNavigate }) {
 
 		if (!livro.nome.trim() || !livro.autor.trim()) return
 
-		if (indiceEmEdicao !== null) {
-			setLivros((livrosAtuais) =>
-				livrosAtuais.map((item, index) => (index === indiceEmEdicao ? { ...livro } : item)),
-			)
-			setIndiceEmEdicao(null)
-		} else {
-			setLivros((livrosAtuais) => [...livrosAtuais, { ...livro }])
-		}
+		setLivros((livrosAtuais) => [...livrosAtuais, { ...livro }])
 
 		setLivro({ ...estadoInicial })
 	}
 
 	const handleEdit = (index) => {
-		setLivro({ ...estadoInicial, ...livros[index] })
-		setIndiceEmEdicao(index)
-		window.scrollTo({ top: 0, behavior: 'smooth' })
+		onSelectBook?.(livros[index])
 	}
 
 	const handleDelete = (index) => {
@@ -64,15 +56,6 @@ function Formulario({ onNavigate }) {
 
 		setLivros((livrosAtuais) => livrosAtuais.filter((_, livroIndex) => livroIndex !== index))
 
-		if (indiceEmEdicao === index) {
-			setLivro({ ...estadoInicial })
-			setIndiceEmEdicao(null)
-		}
-	}
-
-	const handleCancelEdit = () => {
-		setLivro({ ...estadoInicial })
-		setIndiceEmEdicao(null)
 	}
 
 	const tituloLivro = livro.nome.trim() || 'Seu livro aparecerá aqui'
@@ -120,24 +103,10 @@ function Formulario({ onNavigate }) {
 							))}
 						</div>
 
-						<div className="mt-8 flex flex-wrap items-center gap-3">
-							<button
-								type="submit"
-								className="rounded-full border border-[#C9A04A] bg-[#E7E2C2] px-6 py-2.5 text-sm font-bold text-[#051A50] shadow-md transition hover:bg-[#F4D36D] focus:outline-none focus:ring-2 focus:ring-[#F4D36D] focus:ring-offset-2 focus:ring-offset-[#051A50]"
-							>
-								{indiceEmEdicao === null ? 'Cadastrar livro' : 'Salvar alterações'}
-							</button>
-							{indiceEmEdicao !== null && (
-								<button
-									type="button"
-									onClick={handleCancelEdit}
-									className="rounded-full border border-[#C9A04A] px-6 py-2.5 text-sm text-[#E7E2C2] transition hover:bg-[#172b5c] focus:outline-none focus:ring-2 focus:ring-[#F4D36D]"
-								>
-									Cancelar edição
-								</button>
-							)}
+					<div className="mt-8 flex grid place-items-center gap-3">
+					<button type="submit" className="rounded-full border border-[#f4d36a] bg-gradient-to-r from-[#9a6518] to-[#ffe477] px-10 py-3 font-serif font-bold text-[#1b1209] hover:brightness-110">Cadastrar Livro</button>
 
-						</div>
+					</div>
 					</form>
 
 					<aside className="relative min-h-[24rem] overflow-hidden border border-[#C9A04A]/80 bg-[#F4E8CC] p-6 text-[#17213D] shadow-xl sm:min-h-[26rem] sm:p-7">
@@ -179,7 +148,7 @@ function Formulario({ onNavigate }) {
 
 				{livros.length > 0 && (
 					<section className="border-t border-[#C9A04A]/50 px-5 py-6 sm:px-8">
-						<h2 className="font-island mb-4 text-4xl text-[#E7E2C2]">Minha listagem</h2>
+						<h2 className="font-island mb-4 text-4xl text-[#E7E2C2]">Listagem</h2>
 						<div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
 							{livros.map((item, index) => (
 								<article key={`${item.nome}-${index}`} className="border border-[#C9A04A]/60 bg-[#071331]/80 p-4 font-slabo">
