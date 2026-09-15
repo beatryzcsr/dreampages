@@ -4,7 +4,7 @@ const navigationItems = [
 	{ label: 'Home', page: 'home' },
 	{ label: 'Dashboard', page: 'dashboard' },
 	{ label: 'Estante', page: 'listagem' },
-	{ label: 'Cadastro', page: 'cadastro' },
+	{ label: 'Cadastro', page: 'formulario' },
 	{ label: 'Login', page: 'login' },
 ]
 
@@ -25,7 +25,7 @@ function Header({ onNavigate }) {
 			>
 				<div className="flex min-w-0 items-center justify-end gap-0.5 sm:gap-1">
 					{leftNavigationItems.map(({ label, page }) => (
-						<a key={page} href={`#${page}`} onClick={(event) => handleNavigation(event, page)} className="whitespace-nowrap px-1.5 py-1 text-[9px] font-semibold uppercase text-[#f9e9c5] transition-colors hover:bg-[#b52c3a] hover:text-white sm:px-3 sm:text-xs">
+						<a key={page} href={`#${page}`} onClick={(event) => handleNavigation(event, page)} className="whitespace-nowrap px-1.5 py-1 text-[9px] font-serif uppercase text-[#f9e9c5] transition-colors hover:bg-[#b52c3a] hover:text-white sm:px-3 sm:text-xs">
 							{label}
 						</a>
 					))}
@@ -35,7 +35,7 @@ function Header({ onNavigate }) {
 
 				<div className="flex min-w-0 items-center justify-start gap-0.5 sm:gap-1">
 					{rightNavigationItems.map(({ label, page }) => (
-						<a key={page} href={`#${page}`} onClick={(event) => handleNavigation(event, page)} className={`whitespace-nowrap px-1.5 py-1 text-[9px] font-semibold uppercase text-[#f9e9c5] transition-colors hover:bg-[#b52c3a] hover:text-white sm:px-3 sm:text-xs ${page === 'login' ? 'rounded-md bg-[#ad3040]' : ''}`}>
+						<a key={page} href={`#${page}`} onClick={(event) => handleNavigation(event, page)} className={`whitespace-nowrap px-1.5 py-1 text-[9px] font-serif uppercase text-[#f9e9c5] transition-colors hover:bg-[#b52c3a] hover:text-white sm:px-3 sm:text-xs ${page === 'login' ? 'rounded-md bg-[#ad3040]' : ''}`}>
 							{label}
 						</a>
 					))}

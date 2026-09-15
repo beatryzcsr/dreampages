@@ -6,6 +6,7 @@ import Edição from './pages/Edição.jsx'
 import Home from './pages/Home.jsx'
 import Listagem from './pages/Listagem.jsx'
 import Detalhes from './pages/Detalhes.jsx'
+import Formulario from './pages/Formulario.jsx'
 import Header from './components/Header.jsx'
 
 function App() {
@@ -43,7 +44,7 @@ function App() {
     )
   }
 
-  if (pagina === 'home' || pagina === 'listagem' || pagina === 'detalhes' || pagina === 'edicao') {
+  if (pagina === 'home' || pagina === 'listagem' || pagina === 'detalhes' || pagina === 'edicao' || pagina === 'formulario') {
     let conteudo
 
     if (pagina === 'home') conteudo = <Home onNavigate={setPagina} />
@@ -56,6 +57,7 @@ function App() {
     if (pagina === 'edicao') {
       conteudo = <Edição livro={livroSelecionado} onNavigate={setPagina} />
     }
+    if (pagina === 'formulario') conteudo = <Formulario onNavigate={setPagina} />
 
     return (
       <>
