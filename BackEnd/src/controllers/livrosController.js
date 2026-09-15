@@ -149,3 +149,16 @@ export const deletarLivro = async (req, res) => {
     return res.status(500).json({ mensagem: 'Erro interno do servidor' });
   }
 };
+
+// GET /classificacoes - Lista as classificações disponíveis para os formulários
+export const listarClassificacoes = async (req, res) => {
+  try {
+    const query = 'SELECT idclassificacao, classificacao FROM classificacao ORDER BY idclassificacao;';
+    const { rows } = await pool.query(query);
+
+    return res.status(200).json(rows);
+  } catch (error) {
+    console.error('Erro ao listar classificações:', error);
+    return res.status(500).json({ mensagem: 'Erro interno do servidor' });
+  }
+};

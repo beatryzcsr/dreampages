@@ -5,9 +5,10 @@ import flores from '../assets/rosa.png'
 import fundo from '../assets/fundo.png'
 import texto from '../assets/texto.png'
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 const fields = [['titulo', 'Nome do livro'], ['quantidade', 'Quantidade', 'number'], ['preco', 'Preço', 'number'], ['autor', 'Autor'], ['genero', 'Categoria'], ['livraria', 'Livraria'], ['classificacao', 'Classificação'], ['editora', 'Editora']]
 
-function Edição({ livro: initialBook = {}, onNavigate, endpoint = '/api/livros', classificacoesEndpoint = '/classificacoes' }) {
+function Edição({ livro: initialBook = {}, onNavigate, endpoint = `${API_URL}/livros`, classificacoesEndpoint = `${API_URL}/classificacoes` }) {
 	const [livro, setLivro] = useState(initialBook)
 	const [classificacoes, setClassificacoes] = useState([])
 	const [status, setStatus] = useState('')
@@ -20,8 +21,8 @@ function Edição({ livro: initialBook = {}, onNavigate, endpoint = '/api/livros
 	}, [classificacoesEndpoint])
 
 	const classificacaoId = (valor) => {
-		const classificacao = classificacoes.find((item) => item.idClassificacao === Number(valor) || item.id === Number(valor) || item.classificacao === String(valor))
-		return classificacao?.idClassificacao ?? classificacao?.id ?? ''
+		const classificacao = classificacoes.find((item) => item.idclassificacao === Number(valor) || item.idClassificacao === Number(valor) || item.id === Number(valor) || item.classificacao === String(valor))
+		return classificacao?.idclassificacao ?? classificacao?.idClassificacao ?? classificacao?.id ?? ''
 	}
 	const update = (key, value) => setLivro((current) => ({ ...current, [key]: value }))
 	const submit = async (event) => {
@@ -33,11 +34,11 @@ function Edição({ livro: initialBook = {}, onNavigate, endpoint = '/api/livros
 		<main className="min-h-dvh bg-cover bg-center px-4 py-10 text-[#f5df9a] sm:px-8" style={{ backgroundImage: `url(${fundo})` }}>
 			<form onSubmit={submit} className="mx-auto max-w-5xl rounded-[1.5rem] border-2 border-[#b08a3c] bg-[#060d29]/95 p-7 shadow-2xl sm:p-12" style={{ borderImage: `url(${borda}) 28 round` }}>
 				<div className="flex items-center justify-center gap-4">
-					<img src={flores} alt="" className="h-14 w-14 object-contain" />
-					<div className="text-center"><h1 className="font-serif text-3xl uppercase sm:text-4xl">Edição de produto</h1><p className="mt-1 text-lg">Biblioteca de Amour</p></div>
-					<img src={flores} alt="" className="h-14 w-14 -scale-x-100 object-contain" />
+					<img src={flores} alt="" className="h-20 w-20 object-contain" />
+					<div className="text-center"><h1 className="font-serif text-3xl uppercase sm:text-4xl">Edição de Livro</h1><p className="mt-1 text-lg font-serif">Biblioteca de Amour</p></div>
+					<img src={flores} alt="" className="h-20 w-20 -scale-x-100 object-contain" />
 				</div>
-				<img src={divisor} alt="" className="mx-auto h-40 w-full object-contain" />
+				<img src={divisor} alt="" className="mx-auto h-30 w-full object-contain" />
 				<div className="grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
 					{fields.map(([key, label, type = 'text']) => (
 						<label key={key} className="block">
@@ -45,7 +46,7 @@ function Edição({ livro: initialBook = {}, onNavigate, endpoint = '/api/livros
 							{key === 'classificacao' ? (
 								<select value={classificacaoId(livro.classificacao)} onChange={(event) => update(key, event.target.value)} className="w-full border-b-2 border-[#b59750] bg-[#060d29] px-3 py-2 font-serif text-[#fff1bd] outline-none">
 									<option value="">Selecione</option>
-									{classificacoes.map(({ id, label: nome }) => <option key={id} value={id}>{nome}</option>)}
+									{classificacoes.map((item) => { const id = item.idclassificacao ?? item.idClassificacao ?? item.id; const nome = item.classificacao ?? item.label; return <option key={id} value={id}>{nome}</option> })}
 								</select>
 							) : (
 								<input type={type} step={key === 'preco' ? '0.01' : undefined} value={livro[key] ?? ''} onChange={(event) => update(key, event.target.value)} className="w-full border-b-2 border-[#b59750] bg-transparent px-3 py-2 font-serif text-[#fff1bd] outline-none"/>
