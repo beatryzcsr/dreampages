@@ -58,7 +58,7 @@ function Dashboard() {
                 </div>
             </div>
             {erro && (
-                <p className="absolute inset-x-0 bottom-6 text-center font-serif text-lg text-white">
+                <p className="absolute inset-x-0 bottom-6 text-center font-serif text-lg bold text-[#051A50]">
                     {erro}
                 </p>
             )}
