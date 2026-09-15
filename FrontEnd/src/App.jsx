@@ -58,7 +58,21 @@ function App() {
     if (pagina === 'edicao') {
       conteudo = <Edição livro={livroSelecionado} onNavigate={setPagina} />
     }
-    if (pagina === 'formulario') conteudo = <Formulario onNavigate={setPagina} />
+    if (pagina === 'formulario') {
+      conteudo = (
+        <Formulario
+          onNavigate={setPagina}
+          onSelectBook={(book) => {
+            setLivroSelecionado({
+              ...book,
+              titulo: book.titulo ?? book.nome,
+              genero: book.genero ?? book.categoria,
+            })
+            setPagina('edicao')
+          }}
+        />
+      )
+    }
 
     return (
       <>
