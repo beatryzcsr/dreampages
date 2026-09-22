@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import produtoRoutes from './src/routes/livrosRouter';
+import produtoRoutes from './src/routes/livrosRouter.js';
 
 // Carrega as variáveis de ambiente definidas no arquivo .env
 // Isso permite manter dados sensíveis, como porta e credenciais do banco, fora do código
