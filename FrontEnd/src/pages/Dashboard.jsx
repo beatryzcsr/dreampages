@@ -28,7 +28,7 @@ function Dashboard() {
                 const exemplares = livros.reduce((total, livro) => total + Number(livro.quantidade || 0), 0)
 
                 setInformacoes([
-                    { titulo: 'Exemplares', valor: exemplares, legenda: 'Em estoque' },
+                    { titulo: 'Exemplares', valor: valoresUnicos('titulo'), legenda: 'Em estoque' },
                     { titulo: 'Autores', valor: valoresUnicos('autor'), legenda: 'No acervo' },
                     { titulo: 'Gêneros', valor: valoresUnicos('genero'), legenda: 'Cadastrados' },
                     { titulo: 'Editoras', valor: valoresUnicos('editora'), legenda: 'Cadastradas' },
