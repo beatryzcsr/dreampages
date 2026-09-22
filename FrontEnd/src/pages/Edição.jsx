@@ -5,10 +5,9 @@ import flores from '../assets/rosa.png'
 import fundo from '../assets/fundo.png'
 import texto from '../assets/texto.png'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 const fields = [['titulo', 'Nome do livro'], ['quantidade', 'Quantidade', 'number'], ['preco', 'Preço', 'number'], ['autor', 'Autor'], ['genero', 'Categoria'], ['livraria', 'Livraria'], ['classificacao', 'Classificação'], ['editora', 'Editora']]
 
-function Edição({ livro: initialBook = {}, onNavigate, endpoint = `${API_URL}/livros`, classificacoesEndpoint = `${API_URL}/classificacoes` }) {
+function Edição({ livro: initialBook = {}, onNavigate, endpoint = '/api/livros', classificacoesEndpoint = '/classificacoes' }) {
 	const [livro, setLivro] = useState(initialBook)
 	const [classificacoes, setClassificacoes] = useState([])
 	const [status, setStatus] = useState('')
@@ -21,8 +20,8 @@ function Edição({ livro: initialBook = {}, onNavigate, endpoint = `${API_URL}/
 	}, [classificacoesEndpoint])
 
 	const classificacaoId = (valor) => {
-		const classificacao = classificacoes.find((item) => item.idclassificacao === Number(valor) || item.idClassificacao === Number(valor) || item.id === Number(valor) || item.classificacao === String(valor))
-		return classificacao?.idclassificacao ?? classificacao?.idClassificacao ?? classificacao?.id ?? ''
+		const classificacao = classificacoes.find((item) => item.idClassificacao === Number(valor) || item.id === Number(valor) || item.classificacao === String(valor))
+		return classificacao?.idClassificacao ?? classificacao?.id ?? ''
 	}
 	const update = (key, value) => setLivro((current) => ({ ...current, [key]: value }))
 	const submit = async (event) => {
@@ -46,7 +45,7 @@ function Edição({ livro: initialBook = {}, onNavigate, endpoint = `${API_URL}/
 							{key === 'classificacao' ? (
 								<select value={classificacaoId(livro.classificacao)} onChange={(event) => update(key, event.target.value)} className="w-full border-b-2 border-[#b59750] bg-[#060d29] px-3 py-2 font-serif text-[#fff1bd] outline-none">
 									<option value="">Selecione</option>
-									{classificacoes.map((item) => { const id = item.idclassificacao ?? item.idClassificacao ?? item.id; const nome = item.classificacao ?? item.label; return <option key={id} value={id}>{nome}</option> })}
+									{classificacoes.map(({ id, label: nome }) => <option key={id} value={id}>{nome}</option>)}
 								</select>
 							) : (
 								<input type={type} step={key === 'preco' ? '0.01' : undefined} value={livro[key] ?? ''} onChange={(event) => update(key, event.target.value)} className="w-full border-b-2 border-[#b59750] bg-transparent px-3 py-2 font-serif text-[#fff1bd] outline-none"/>
