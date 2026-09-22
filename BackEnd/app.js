@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import produtoRoutes from './src/routes/livrosRouter.js';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import livrosRouter from './src/router/livrosRouter.js';
