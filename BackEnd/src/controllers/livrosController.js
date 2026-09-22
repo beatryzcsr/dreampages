@@ -72,6 +72,10 @@ export const buscarLivroPorId = async (req, res) => {
 // POST /livros - Cadastra um novo livro
 export const criarLivro = async (req, res) => {
   try {
+    if (req.body.idlivro || req.body.idLivro || req.body.id) {
+      return res.status(405).json({ mensagem: 'Para editar um livro, use a rota PUT /livros/:id.' });
+    }
+
     // Extrai os dados 
     const { titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor, editora} = req.body;
 
@@ -102,6 +106,12 @@ export const atualizarLivro = async (req, res) => {
   try {
     // Pega o ID da URL e os dados do corpo
     const { id } = req.params;
+    const idLivro = Number(id);
+
+    if (!Number.isInteger(idLivro) || idLivro <= 0) {
+      return res.status(400).json({ mensagem: 'ID do livro inválido para atualização.' });
+    }
+
     const { titulo, sinopse, quantidade, preco, imagem, genero, classificacao, livraria, autor, editora } = req.body;
     const classificacaoId = await resolverIdClassificacao(classificacao);
 
@@ -112,7 +122,7 @@ export const atualizarLivro = async (req, res) => {
       WHERE idLivro = $11
       RETURNING *;
     `;
-    const values = [titulo, sinopse, quantidade, preco, imagem, genero, classificacaoId, livraria, autor, editora, id];
+    const values = [titulo, sinopse, quantidade, preco, imagem, genero, classificacaoId, livraria, autor, editora, idLivro];
 
     const { rows } = await pool.query(query, values);
 
@@ -125,7 +135,7 @@ export const atualizarLivro = async (req, res) => {
     return res.status(200).json(rows[0]);
   } catch (error) {
     console.error('Erro ao atualizar livro:', error);
-    return res.status(500).json({ mensagem: 'Erro interno do servidor' });
+    return res.status(error.statusCode || 500).json({ mensagem: error.statusCode ? error.message : 'Erro interno do servidor' });
   }
 };
 

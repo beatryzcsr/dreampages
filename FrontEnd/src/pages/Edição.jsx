@@ -3,12 +3,11 @@ import borda from '../assets/borda.png'
 import divisor from '../assets/divisor.png'
 import flores from '../assets/rosa.png'
 import fundo from '../assets/fundo.png'
-import texto from '../assets/texto.png'
 import { authFetch } from '../api.js'
 
 const fields = [['titulo', 'Nome do livro'], ['quantidade', 'Quantidade', 'number'], ['preco', 'Preço', 'number'], ['autor', 'Autor'], ['genero', 'Categoria'], ['livraria', 'Livraria'], ['classificacao', 'Classificação'], ['editora', 'Editora']]
 
-function Edição({ livro: initialBook = {}, onNavigate, endpoint = '/livros', classificacoesEndpoint = '/classificacoes' }) {
+function Edição({ livro: initialBook = {}, onNavigate, onBookSaved, endpoint = '/livros', classificacoesEndpoint = '/classificacoes' }) {
 	const [livro, setLivro] = useState(initialBook)
 	const [classificacoes, setClassificacoes] = useState([])
 	const [status, setStatus] = useState('')
@@ -21,13 +20,25 @@ function Edição({ livro: initialBook = {}, onNavigate, endpoint = '/livros', c
 	}, [classificacoesEndpoint])
 
 	const classificacaoId = (valor) => {
-		const classificacao = classificacoes.find((item) => item.idClassificacao === Number(valor) || item.id === Number(valor) || item.classificacao === String(valor))
-		return classificacao?.idClassificacao ?? classificacao?.id ?? ''
+		const classificacao = classificacoes.find((item) => item.idclassificacao === Number(valor) || item.idClassificacao === Number(valor) || item.id === Number(valor) || item.classificacao === String(valor) || item.label === String(valor))
+		return classificacao?.idclassificacao ?? classificacao?.idClassificacao ?? classificacao?.id ?? ''
 	}
+	const classificacaoNome = (item) => item.classificacao ?? item.label ?? ''
+	const classificacaoValor = (item) => item.idclassificacao ?? item.idClassificacao ?? item.id
 	const update = (key, value) => setLivro((current) => ({ ...current, [key]: value }))
 	const submit = async (event) => {
 		event.preventDefault(); setStatus('Salvando...')
-		try { const id = livro.idLivro ?? livro.id; const dados = { ...livro, classificacao: classificacaoId(livro.classificacao) }; const response = await authFetch(id ? `${endpoint}/${id}` : endpoint, { method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dados) }); if (!response.ok) throw new Error('Falha ao salvar'); setStatus('Alterações salvas.'); onNavigate?.('edicao', id) } catch { setStatus('Não foi possível salvar agora.') }
+		try {
+			const id = livro.idLivro ?? livro.idlivro ?? livro.id
+			if (!id) throw new Error('Livro sem identificador')
+			const dados = { ...livro, classificacao: classificacaoId(livro.classificacao) }
+			const response = await authFetch(`${endpoint}/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dados) })
+			if (!response.ok) throw new Error('Falha ao salvar')
+			const livroAtualizado = await response.json()
+			setLivro(livroAtualizado)
+			onBookSaved?.(livroAtualizado)
+			setStatus('Alterações salvas.')
+		} catch { setStatus('Não foi possível salvar agora.') }
 	}
 
 	return (
@@ -46,7 +57,7 @@ function Edição({ livro: initialBook = {}, onNavigate, endpoint = '/livros', c
 							{key === 'classificacao' ? (
 								<select value={classificacaoId(livro.classificacao)} onChange={(event) => update(key, event.target.value)} className="w-full border-b-2 border-[#b59750] bg-[#060d29] px-3 py-2 font-serif text-[#fff1bd] outline-none">
 									<option value="">Selecione</option>
-									{classificacoes.map(({ id, label: nome }) => <option key={id} value={id}>{nome}</option>)}
+									{classificacoes.map((item) => <option key={classificacaoValor(item)} value={classificacaoValor(item)}>{classificacaoNome(item)}</option>)}
 								</select>
 							) : (
 								<input type={type} step={key === 'preco' ? '0.01' : undefined} value={livro[key] ?? ''} onChange={(event) => update(key, event.target.value)} className="w-full border-b-2 border-[#b59750] bg-transparent px-3 py-2 font-serif text-[#fff1bd] outline-none"/>
