@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import produtoRoutes from './src/routes/livrosRouter.js';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import livrosRouter from './src/router/livrosRouter.js';
@@ -31,6 +32,7 @@ app.use('/auth', authRouter);
 // Registra as rotas de livros na aplicação
 // Todas as rotas do arquivo livrosRouter começam com /livros
 app.use('/livros', livrosRouter);
+app.get('/classificacoes', listarClassificacoes);
 
 // Inicia o servidor HTTP na porta configurada
 const server = app.listen(PORT, () => {

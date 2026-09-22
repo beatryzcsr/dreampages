@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
+// import da imagem de fundo 
 import fundo from '../assets/fundo.png'
 import { authFetch } from '../api.js'
 
+// definição das variáveis que serão ultilizadas nos cards 
 const informacoesIniciais = [
     { titulo: 'Exemplares', valor: 0, legenda: 'Em estoque' },
     { titulo: 'Autores', valor: 0, legenda: 'No acervo' },
@@ -10,6 +12,7 @@ const informacoesIniciais = [
     { titulo: 'Livrarias', valor: 0, legenda: 'Cadastradas' },
 ]
 
+// função que irá organizar as informações da API 
 function Dashboard() {
     const [informacoes, setInformacoes] = useState(informacoesIniciais)
     const [carregando, setCarregando] = useState(true)
@@ -24,10 +27,14 @@ function Dashboard() {
                     throw new Error('Não foi possível carregar os livros.')
                 }
 
+                 // transformando as informações de livro em resposta json 
                 const livros = await resposta.json()
-                const valoresUnicos = (campo) => new Set(livros.map((livro) => livro[campo]).filter(Boolean)).size
-                const exemplares = livros.reduce((total, livro) => total + Number(livro.quantidade || 0), 0)
 
+                 // mapeando os campos presentes na tabela livros 
+                const valoresUnicos = (campo) => new Set(livros.map((livro) => livro[campo]).filter(Boolean)).size
+                 // transformando a quantidade de exemplares em numero 
+                const exemplares = livros.reduce((total, livro) => total + Number(livro.quantidade || 0), 0)
+                // informações que esterão presente nos cards 
                 setInformacoes([
                     { titulo: 'Exemplares', valor: valoresUnicos('titulo'), legenda: 'Em estoque' },
                     { titulo: 'Autores', valor: valoresUnicos('autor'), legenda: 'No acervo' },
@@ -35,6 +42,7 @@ function Dashboard() {
                     { titulo: 'Editoras', valor: valoresUnicos('editora'), legenda: 'Cadastradas' },
                     { titulo: 'Livrarias', valor: valoresUnicos('livraria'), legenda: 'Cadastradas' },
                 ])
+            // tratamento de erro 
             } catch (error) {
                 setErro(error.message)
             } finally {
@@ -45,6 +53,7 @@ function Dashboard() {
         carregarLivros()
     }, [])
 
+    // informaçoes que estarão na tela 
     return (
         <main className="relative min-h-dvh bg-cover bg-center bg-fixed px-3 py-4 text-[#AA723B] sm:px-6 sm:py-5 lg:px-10" style={{ backgroundImage: `url(${fundo})` }}>
             <div className="flex min-h-dvh items-center justify-center py-2 sm:py-3">
@@ -59,6 +68,7 @@ function Dashboard() {
                 </div>
             </div>
             {erro && (
+            // erro no carregamento 
                 <p className="absolute inset-x-0 bottom-6 text-center font-serif text-lg font-bold text-[#051A50]">
                     {erro}
                 </p>
