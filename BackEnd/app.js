@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import livrosRouter from './src/router/livrosRouter.js';
+import { listarClassificacoes } from './src/controllers/livrosController.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,6 +30,7 @@ app.use(express.json());
 // Registra as rotas de livros na aplicação
 // Todas as rotas do arquivo livrosRouter começam com /livros
 app.use('/livros', livrosRouter);
+app.get('/classificacoes', listarClassificacoes);
 
 // Inicia o servidor HTTP na porta configurada
 const server = app.listen(PORT, () => {

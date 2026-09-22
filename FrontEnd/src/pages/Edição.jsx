@@ -33,11 +33,11 @@ function Edição({ livro: initialBook = {}, onNavigate, endpoint = '/api/livros
 		<main className="min-h-dvh bg-cover bg-center px-4 py-10 text-[#f5df9a] sm:px-8" style={{ backgroundImage: `url(${fundo})` }}>
 			<form onSubmit={submit} className="mx-auto max-w-5xl rounded-[1.5rem] border-2 border-[#b08a3c] bg-[#060d29]/95 p-7 shadow-2xl sm:p-12" style={{ borderImage: `url(${borda}) 28 round` }}>
 				<div className="flex items-center justify-center gap-4">
-					<img src={flores} alt="" className="h-14 w-14 object-contain" />
-					<div className="text-center"><h1 className="font-serif text-3xl uppercase sm:text-4xl">Edição de produto</h1><p className="mt-1 text-lg">Biblioteca de Amour</p></div>
-					<img src={flores} alt="" className="h-14 w-14 -scale-x-100 object-contain" />
+					<img src={flores} alt="" className="h-20 w-20 object-contain" />
+					<div className="text-center"><h1 className="font-serif text-3xl uppercase sm:text-4xl">Edição de Livro</h1><p className="mt-1 text-lg font-serif">Biblioteca de Amour</p></div>
+					<img src={flores} alt="" className="h-20 w-20 -scale-x-100 object-contain" />
 				</div>
-				<img src={divisor} alt="" className="mx-auto h-40 w-full object-contain" />
+				<img src={divisor} alt="" className="mx-auto h-30 w-full object-contain" />
 				<div className="grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
 					{fields.map(([key, label, type = 'text']) => (
 						<label key={key} className="block">
