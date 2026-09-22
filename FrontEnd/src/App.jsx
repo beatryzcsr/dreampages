@@ -87,7 +87,7 @@ function App() {
       conteudo = <Detalhes livro={livroSelecionado} onNavigate={setPagina} />
     }
     if (pagina === 'edicao') {
-      conteudo = <Edição livro={livroSelecionado} onNavigate={setPagina} />
+      conteudo = <Edição livro={livroSelecionado} onNavigate={setPagina} onBookSaved={setLivroSelecionado} />
     }
     if (pagina === 'formulario') {
       conteudo = (
