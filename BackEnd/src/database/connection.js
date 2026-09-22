@@ -1,8 +1,13 @@
 import pkg from 'pg';
 import dotenv from 'dotenv';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-// variáveis de ambiente do arquivo .env
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// variáveis de ambiente do arquivo .env do backend
+dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 const { Pool } = pkg;
 
