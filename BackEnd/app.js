@@ -5,6 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import livrosRouter from './src/router/livrosRouter.js';
 import authRouter from './src/router/authRouter.js';
+import { listarClassificacoes } from './src/controllers/livrosController.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
