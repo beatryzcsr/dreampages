@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react'
 import madeira from '../assets/madeira.png'
+import { authFetch } from '../api.js'
 
 const valueOf = (book, key, fallback = 'Não informado') => book?.[key] ?? fallback
 
-function Detalhes({ livro: initialBook, livroId, onNavigate, endpoint = '/api/livros' }) {
+function Detalhes({ livro: initialBook, livroId, onNavigate, endpoint = '/livros' }) {
 	const [livro, setLivro] = useState(initialBook)
 	const [loading, setLoading] = useState(!initialBook)
 
 	useEffect(() => {
 		if (initialBook || !livroId) return
-		fetch(`${endpoint}/${livroId}`).then((response) => (response.ok ? response.json() : Promise.reject(new Error('Falha ao carregar livro')))).then(setLivro).finally(() => setLoading(false))
+		authFetch(`${endpoint}/${livroId}`).then((response) => (response.ok ? response.json() : Promise.reject(new Error('Falha ao carregar livro')))).then(setLivro).finally(() => setLoading(false))
 	}, [endpoint, initialBook, livroId])
 
 	if (loading) return <main className="grid min-h-dvh place-items-center bg-[#27120b] text-xl text-[#f8e8c8]">Carregando livro...</main>

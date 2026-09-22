@@ -1,7 +1,7 @@
 import logo from '../assets/dreamPages.png'
 import belaFera from '../assets/belaEFera.png'
 
-function Login({ email, setEmail, senha, setSenha, onNavigate, onSubmit }) 
+function Login({ email, setEmail, senha, setSenha, onNavigate, onSubmit, mensagem, carregando }) 
 // O componente recebe informações através das props.
 //setSenha; Função para alterar a senha. ; onNavigate ; Muda de página ; onSubmit ; Executa a ação de login.
 {
@@ -38,6 +38,8 @@ onChange → quando digitar, atualiza o email. */}
 
             </label>
 
+            {mensagem && <p className="text-center text-sm font-medium text-rose-200" role="alert">{mensagem}</p>}
+
             <label className="block">
               <span className="mb-2 block text-sm font-slabo font-medium text-[#E7E2C2]">Senha</span>
             <input
@@ -55,9 +57,9 @@ onChange → quando digitar, atualiza o email. */}
             </button>
             {/* vá para a página chamada recuperar. */}
 
-            <button type="submit" 
+            <button type="submit" disabled={carregando}
             className="w-full rounded-lg px-4 py-3 font-island mb-6 text-center text-4xl text-[#051A50] transition hover:bg-rose-700 focus:outline-none focus:ring-2 focus:[#051A50] focus:ring-offset-2" style={{ backgroundColor: '#E7E2C2' }}>
-              Login
+              {carregando ? 'Entrando...' : 'Login'}
             </button>
           </form>
 

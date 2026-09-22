@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import fundo from '../assets/fundo.png'
+import { authFetch } from '../api.js'
 
 const informacoesIniciais = [
     { titulo: 'Exemplares', valor: 0, legenda: 'Em estoque' },
@@ -17,7 +18,7 @@ function Dashboard() {
     useEffect(() => {
         async function carregarLivros() {
             try {
-                const resposta = await fetch('http://localhost:5000/livros')
+                const resposta = await authFetch('/livros')
 
                 if (!resposta.ok) {
                     throw new Error('Não foi possível carregar os livros.')

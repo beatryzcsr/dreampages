@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import livrosRouter from './src/router/livrosRouter.js';
+import authRouter from './src/router/authRouter.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -25,6 +26,7 @@ app.use(cors());
 
 // Permite ler JSON enviado pelo frontend em requisições POST/PUT
 app.use(express.json());
+app.use('/auth', authRouter);
 
 // Registra as rotas de livros na aplicação
 // Todas as rotas do arquivo livrosRouter começam com /livros

@@ -10,16 +10,39 @@ import Detalhes from './pages/Detalhes.jsx'
 import Formulario from './pages/Formulario.jsx'
 import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
+import { apiUrl } from './api.js'
 
 function App() {
   const [pagina, setPagina] = useState('login')
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
   const [livroSelecionado, setLivroSelecionado] = useState(null)
+  const [mensagem, setMensagem] = useState('')
+  const [carregando, setCarregando] = useState(false)
 
-  const handleSubmit = (event) => {
+  const enviarAutenticacao = async (event, rota, aoSucesso = 'home') => {
     event.preventDefault()
-    setPagina('home')
+    setMensagem('')
+    setCarregando(true)
+
+    try {
+      const resposta = await fetch(apiUrl(rota), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, senha }),
+      })
+      const dados = await resposta.json()
+      if (!resposta.ok) throw new Error(dados.mensagem || 'Não foi possível concluir a operação.')
+
+      if (dados.token) localStorage.setItem('token', dados.token)
+      setSenha('')
+      setMensagem(dados.mensagem || '')
+      setPagina(aoSucesso)
+    } catch (error) {
+      setMensagem(error.message)
+    } finally {
+      setCarregando(false)
+    }
   }
 
   if (pagina === 'cadastro') {
@@ -30,7 +53,9 @@ function App() {
         senha={senha}
         setSenha={setSenha}
         onNavigate={setPagina}
-        onSubmit={handleSubmit}
+        onSubmit={(event) => enviarAutenticacao(event, '/auth/register')}
+        mensagem={mensagem}
+        carregando={carregando}
       />
     )
   }
@@ -38,10 +63,14 @@ function App() {
   if (pagina === 'recuperar') {
     return (
       <RecuperarSenha
+        email={email}
+        setEmail={setEmail}
         senha={senha}
         setSenha={setSenha}
         onNavigate={setPagina}
-        onSubmit={handleSubmit}
+        onSubmit={(event) => enviarAutenticacao(event, '/auth/recover', 'login')}
+        mensagem={mensagem}
+        carregando={carregando}
       />
     )
   }
@@ -92,7 +121,9 @@ function App() {
       senha={senha}
       setSenha={setSenha}
       onNavigate={setPagina}
-      onSubmit={handleSubmit}
+      onSubmit={(event) => enviarAutenticacao(event, '/auth/login')}
+      mensagem={mensagem}
+      carregando={carregando}
     />
   )
 }

@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react'
 import estante from '../assets/estante.png'
+import { authFetch } from '../api.js'
 
 const imageOf = (book) => book.imagem || book.image || book.capa
 
-function Listagem({ livros: initialBooks, onNavigate, onSelectBook, endpoint = '/api/livros' }) {
+function Listagem({ livros: initialBooks, onNavigate, onSelectBook, endpoint = '/livros' }) {
 	const [livros, setLivros] = useState(initialBooks || [])
 	const [loading, setLoading] = useState(!initialBooks)
 
 	useEffect(() => {
 		if (initialBooks) return
-		fetch(endpoint).then((response) => (response.ok ? response.json() : Promise.reject(new Error('Falha ao carregar livros')))).then(setLivros).catch(() => setLivros([])).finally(() => setLoading(false))
+		authFetch(endpoint).then((response) => (response.ok ? response.json() : Promise.reject(new Error('Falha ao carregar livros')))).then(setLivros).catch(() => setLivros([])).finally(() => setLoading(false))
 	}, [endpoint, initialBooks])
 
 	const openBook = (book) => { onSelectBook?.(book); onNavigate?.('detalhes', book.idLivro ?? book.id) }
