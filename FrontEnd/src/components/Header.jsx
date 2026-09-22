@@ -18,24 +18,24 @@ function Header({ onNavigate }) {
 	}
 
 	return (
-		<header className="relative z-10 flex min-h-[132px] items-end justify-center overflow-hidden bg-[#250003] px-2 pb-10 pt-16 sm:min-h-[154px] sm:pb-11 sm:px-4">
+		<header className="relative z-10 flex min-h-[146px] items-end justify-center overflow-hidden bg-[#250003] px-2 pb-4 pt-14 sm:min-h-[154px] sm:px-4 sm:pb-11 sm:pt-16">
 			<nav
 				aria-label="Navegação principal"
-				className="grid w-full max-w-[790px] grid-cols-[minmax(0,1fr)_clamp(150px,28vw,245px)_minmax(0,1fr)] items-center bg-[#8d0010] px-1 py-1 sm:px-2"
+				className="flex w-full max-w-[790px] flex-wrap items-center justify-center gap-x-1 bg-[#8d0010] px-1 py-1 sm:grid sm:grid-cols-[minmax(0,1fr)_clamp(150px,28vw,245px)_minmax(0,1fr)] sm:px-2"
 			>
-				<div className="flex min-w-0 items-center justify-end gap-0.5 sm:gap-1">
+				<div className="flex min-w-0 items-center justify-center gap-0 sm:justify-end sm:gap-1">
 					{leftNavigationItems.map(({ label, page }) => (
-						<a key={page} href={`#${page}`} onClick={(event) => handleNavigation(event, page)} className="whitespace-nowrap px-1.5 py-1 text-[9px] font-serif uppercase text-[#f9e9c5] transition-colors hover:bg-[#b52c3a] hover:text-white sm:px-3 sm:text-xs">
+						<a key={page} href={`#${page}`} onClick={(event) => handleNavigation(event, page)} className="whitespace-nowrap px-1 py-1 text-[8px] font-serif uppercase text-[#f9e9c5] transition-colors hover:bg-[#b52c3a] hover:text-white sm:px-3 sm:text-xs">
 							{label}
 						</a>
 					))}
 				</div>
 
-				<div aria-hidden="true" />
+				<div aria-hidden="true" className="hidden sm:block" />
 
-				<div className="flex min-w-0 items-center justify-start gap-0.5 sm:gap-1">
+				<div className="flex min-w-0 items-center justify-center gap-0 sm:justify-start sm:gap-1">
 					{rightNavigationItems.map(({ label, page }) => (
-						<a key={page} href={`#${page}`} onClick={(event) => handleNavigation(event, page)} className={`whitespace-nowrap px-1.5 py-1 text-[9px] font-serif uppercase text-[#f9e9c5] transition-colors hover:bg-[#b52c3a] hover:text-white sm:px-3 sm:text-xs ${page === 'login' ? 'rounded-md bg-[#ad3040]' : ''}`}>
+						<a key={page} href={`#${page}`} onClick={(event) => handleNavigation(event, page)} className={`whitespace-nowrap px-1 py-1 text-[8px] font-serif uppercase text-[#f9e9c5] transition-colors hover:bg-[#b52c3a] hover:text-white sm:px-3 sm:text-xs ${page === 'login' ? 'rounded-md bg-[#ad3040]' : ''}`}>
 							{label}
 						</a>
 					))}
@@ -48,7 +48,7 @@ function Header({ onNavigate }) {
 				aria-label="Ir para Home"
 				className="absolute left-1/2 top-1 -translate-x-1/2 transition-transform hover:scale-[1.03]"
 			>
-				<img src={logo} alt="DreamPages Biblioteca" className="h-auto w-40 sm:w-52" />
+				<img src={logo} alt="DreamPages Biblioteca" className="h-auto w-32 sm:w-52" />
 			</a>
 		</header>
 	)
