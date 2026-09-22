@@ -1,21 +1,18 @@
 import { useEffect, useState } from 'react'
 import estante from '../assets/estante.png'
+import { authFetch } from '../api.js'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 const imageOf = (book) => book.imagem || book.image || book.capa
 
-function Listagem({ livros: initialBooks, onNavigate, onSelectBook, endpoint = `${API_URL}/livros` }) {
+function Listagem({ livros: initialBooks, onNavigate, onSelectBook, endpoint = '/livros' }) {
 	const [livros, setLivros] = useState(initialBooks || [])
 	const [loading, setLoading] = useState(!initialBooks)
 	const [erro, setErro] = useState('')
 
 	useEffect(() => {
 		if (initialBooks) return
-		fetch(endpoint)
-			.then((response) => (response.ok ? response.json() : Promise.reject(new Error(`A API respondeu com status ${response.status}`))))
-			.then(setLivros)
-			.catch((error) => { setLivros([]); setErro(error.message) })
-			.finally(() => setLoading(false))
+		authFetch(endpoint).then((response) => (response.ok ? response.json() : Promise.reject(new Error('Falha ao carregar livros')))).then(setLivros).catch(() => setLivros([])).finally(() => setLoading(false))
 	}, [endpoint, initialBooks])
 
 	const openBook = (book) => { onSelectBook?.(book); onNavigate?.('detalhes', book.idlivro ?? book.idLivro ?? book.id) }

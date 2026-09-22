@@ -1,7 +1,7 @@
 import logo from '../assets/dreamPages.png'
 import belaFera from '../assets/belaEFera.png'
 
-function Cadastro({ email, setEmail, senha, setSenha, onNavigate, onSubmit }) 
+function Cadastro({ email, setEmail, senha, setSenha, onNavigate, onSubmit, mensagem, carregando }) 
 // Recebe os mesmos tipos de informação do Login.
 {
   return (
@@ -41,8 +41,10 @@ function Cadastro({ email, setEmail, senha, setSenha, onNavigate, onSubmit })
 {/* O usuário digita uma senha. */}
             </label>
 
-            <button type="submit" className="w-full rounded-lg px-4 py-3 font-island text-4xl text-[#051A50]  transition hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"style={{ backgroundColor: '#E7E2C2' }}>
-              Criar
+            {mensagem && <p className="text-center text-sm font-medium text-rose-200" role="alert">{mensagem}</p>}
+
+            <button type="submit" disabled={carregando} className="w-full rounded-lg px-4 py-3 font-island text-4xl text-[#051A50]  transition hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2"style={{ backgroundColor: '#E7E2C2' }}>
+              {carregando ? 'Criando...' : 'Criar'}
             </button>
             {/* Envia o formulário. O onSubmit é quem realmente executa a função responsável pelo cadastro. */}
           </form>

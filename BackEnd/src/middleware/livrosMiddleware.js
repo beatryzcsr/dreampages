@@ -1,5 +1,5 @@
 // Importa a biblioteca JWT para validar tokens de autenticação
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 // verificar se o usuário está autenticado
 function verificarToken(req, res, next) {
@@ -31,6 +31,4 @@ function verificarToken(req, res, next) {
   }
 }
 
-module.exports = {
-  verificarToken
-};
+export { verificarToken };

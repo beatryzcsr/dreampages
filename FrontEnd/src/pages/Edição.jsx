@@ -4,16 +4,17 @@ import divisor from '../assets/divisor.png'
 import flores from '../assets/rosa.png'
 import fundo from '../assets/fundo.png'
 import texto from '../assets/texto.png'
+import { authFetch } from '../api.js'
 
 const fields = [['titulo', 'Nome do livro'], ['quantidade', 'Quantidade', 'number'], ['preco', 'Preço', 'number'], ['autor', 'Autor'], ['genero', 'Categoria'], ['livraria', 'Livraria'], ['classificacao', 'Classificação'], ['editora', 'Editora']]
 
-function Edição({ livro: initialBook = {}, onNavigate, endpoint = '/api/livros', classificacoesEndpoint = '/classificacoes' }) {
+function Edição({ livro: initialBook = {}, onNavigate, endpoint = '/livros', classificacoesEndpoint = '/classificacoes' }) {
 	const [livro, setLivro] = useState(initialBook)
 	const [classificacoes, setClassificacoes] = useState([])
 	const [status, setStatus] = useState('')
 
 	useEffect(() => {
-		fetch(classificacoesEndpoint)
+		authFetch(classificacoesEndpoint)
 			.then((response) => (response.ok ? response.json() : Promise.reject(new Error('Falha ao carregar classificacoes'))))
 			.then(setClassificacoes)
 			.catch(() => setClassificacoes([]))
@@ -26,7 +27,7 @@ function Edição({ livro: initialBook = {}, onNavigate, endpoint = '/api/livros
 	const update = (key, value) => setLivro((current) => ({ ...current, [key]: value }))
 	const submit = async (event) => {
 		event.preventDefault(); setStatus('Salvando...')
-		try { const id = livro.idLivro ?? livro.id; const dados = { ...livro, classificacao: classificacaoId(livro.classificacao) }; const response = await fetch(id ? `${endpoint}/${id}` : endpoint, { method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dados) }); if (!response.ok) throw new Error('Falha ao salvar'); setStatus('Alterações salvas.'); onNavigate?.('edicao', id) } catch { setStatus('Não foi possível salvar agora.') }
+		try { const id = livro.idLivro ?? livro.id; const dados = { ...livro, classificacao: classificacaoId(livro.classificacao) }; const response = await authFetch(id ? `${endpoint}/${id}` : endpoint, { method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dados) }); if (!response.ok) throw new Error('Falha ao salvar'); setStatus('Alterações salvas.'); onNavigate?.('edicao', id) } catch { setStatus('Não foi possível salvar agora.') }
 	}
 
 	return (

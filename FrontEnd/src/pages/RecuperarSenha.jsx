@@ -1,7 +1,7 @@
 import logo from '../assets/dreamPages.png'
 import belaFera from '../assets/belaEFera.png'
 
-function RecuperarSenha({ senha, setSenha, onNavigate, onSubmit }) 
+function RecuperarSenha({ email, setEmail, senha, setSenha, onNavigate, onSubmit, mensagem, carregando }) 
 //props
 //essa peça é a tela de recuperação de senha.
 // setSenha -> É a função que altera a senha.
@@ -25,6 +25,18 @@ function RecuperarSenha({ senha, setSenha, onNavigate, onSubmit })
 
           <form className="space-y-4" onSubmit={onSubmit}>
             <label className="block">
+              <span className="mb-2 block text-sm font-slabo font-medium text-[#E7E2C2]">Email</span>
+              <input
+                className="w-full rounded-lg border border-stone-300 bg-white px-4 py-3 text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20"
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="Digite seu e-mail"
+                required
+              />
+            </label>
+
+            <label className="block">
               <span className="mb-2 block text-sm font-slabo font-medium text-[#E7E2C2]">Nova senha</span>
             <input
               className="w-full rounded-lg border border-stone-300 bg-white px-4 py-3 text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20"
@@ -32,11 +44,14 @@ function RecuperarSenha({ senha, setSenha, onNavigate, onSubmit })
               value={senha}
               onChange={(event) => setSenha(event.target.value)}
               placeholder="Digite a nova senha"
+              required
             />
             </label>
 
-            <button type="submit" className="w-full rounded-lg bg-rose-600 px-4 py-3 font-island text-4xl text-[#051A50] transition hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2" style={{ backgroundColor: '#E7E2C2' }}>
-              Confirmar
+            {mensagem && <p className="text-center text-sm font-medium text-rose-200" role="alert">{mensagem}</p>}
+
+            <button type="submit" disabled={carregando} className="w-full rounded-lg bg-rose-600 px-4 py-3 font-island text-4xl text-[#051A50] transition hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2" style={{ backgroundColor: '#E7E2C2' }}>
+              {carregando ? 'Atualizando...' : 'Confirmar'}
             </button>
           </form>
 

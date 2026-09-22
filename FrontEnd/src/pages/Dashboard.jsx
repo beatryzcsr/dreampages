@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 // import da imagem de fundo 
 import fundo from '../assets/fundo.png'
+import { authFetch } from '../api.js'
 
 // definição das variáveis que serão ultilizadas nos cards 
 const informacoesIniciais = [
@@ -20,8 +21,7 @@ function Dashboard() {
     useEffect(() => {
         async function carregarLivros() {
             try {
-                const resposta = await fetch('http://localhost:5000/livros')
-                // rota onde se encontra as informações 
+                const resposta = await authFetch('/livros')
 
                 if (!resposta.ok) {
                     throw new Error('Não foi possível carregar os livros.')
